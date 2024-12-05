@@ -36,28 +36,34 @@ passport.use(new LocalStrategy({ usernameField: 'email' }, async (email, passwor
   }
 }))
 
-//passport.use(new GoogleStrategy({
-//  clientID: process.env.clientID,
-//  clientSecret: process.env.clientSecret,
-//  callbackURL: '/auth/google/callback'
-//}, async (accessToken, refreshToken, profile, done) => {
-//  try {
-//    const user = await User.findOne({ googleId: profile.id })
-//
-//    if (user) {
-//      return done(null, user)
-//    }
-//
-//    const newUser = await User.create({
-//      googleId: profile.id,
-//      name: profile.displayName,
-//      email: profile.emails[0].value
-//    })  
-//
-//    done(null, newUser)
-//  } catch (error) {
-//    done(error)
-//  }
-//}))
+const clientID = process.env.clientID;
+const clientSecret = process.env.clientSecrect;
+
+passport.use(new GoogleStrategy({
+  clientID: clientID,
+  clientSecret: clientSecret,
+  callbackURL: '/api/v1/auth/google/callback'
+}, async (accessToken, refreshToken, profile, done) => {
+  try {
+    const user = await User.findOne({ googleId: profile.id })
+
+    if (user) return done(null, user)
+
+    const fullName = profile.displayName.split(' ');
+    const firstName = fullName[0];
+    const lastName = fullName[1];
+    const newUser = await User.create({
+      googleId: profile.id,
+      firstName,
+      lastName,
+      email: profile.emails[0].value
+    })  
+
+    done(null, newUser)
+
+  } catch (err) {
+    done(err, null)
+  }
+}))
 
 export default passport;

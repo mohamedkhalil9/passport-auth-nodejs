@@ -6,7 +6,7 @@ import MongoStore from 'connect-mongo';
 import passport from 'passport';
 import appRouter from './api/routes/indexRouter.js';
 import mongoose from 'mongoose';
-import './api/services/strategies.js';
+import './api/services/passport.js';
 import cors from 'cors';
 
 dotenv.config();
@@ -23,6 +23,7 @@ app.use(session({
     client: mongoose.connection.getClient()
   }) 
 }))
+
 app.use(cors({
   credentials: true,
   origin: 'http://localhost:5173'
