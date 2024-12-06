@@ -17,6 +17,7 @@ router.get('/google/callback', passport.authenticate('google', { failureRedirect
 router.get('/logout', logout)
 
 router.post('/forgot-password', emailValidator, forgotPassword)
-router.post('/reset-password', OTPValidator, verifyOTP, resetPassword)
+router.post('/verify-otp', OTPValidator, verifyOTP)
+router.patch('/reset-password/:OTP', resetPassword)
 
 export default router;

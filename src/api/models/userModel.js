@@ -5,17 +5,14 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-
   lastName: {
     type: String,
     required: true
   },
-
   email: {
     type: String,
     required: true
   },
-
   password: {
     type: String,
   },
@@ -27,16 +24,16 @@ const UserSchema = new mongoose.Schema({
   },
   dateOfBirth: {
     type: Date,
-    required: true,
+    //required: true,
   },
   gender: {
     type: String,
     enum: ["Male", "Female"],
-    required: true
+    //required: true
   },
   phone: {
     type: String,
-    required: true,
+    //required: true,
   },
   country: String,
   address: String,

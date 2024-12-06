@@ -41,27 +41,34 @@ const forgotPassword = asyncWrapper(async (req, res) => {
   if (!user) throw new appError('user not found', 404);
 
   const OTP = crypto.randomInt(1000, 10000).toString();
-  const otpExpire = Date.now() + 60000;
+  const otpExpire = Date.now() + 1000 * 60 //* 5;
 
+  //const hashedOTP = await bcrypt.hash(OTP, 10);
   user.OTP = OTP;
   user.otpExpire = otpExpire;
   await user.save();
 
   sendResetMail(email, OTP);
   
-  res.status(200).json({ status: 'success' })
+  res.status(200).json({ status: 'success', data: user.email })
 })
 
 const resetPassword = asyncWrapper(async (req, res) => {
-  const { email, newPassword, confirmNewPassword } = req.body;
+  const { OTP } = req.params;
+
+  const user = await User.findOne({ OTP , otpExpire: {$gt: Date.now()}});
+  if (!user) throw new appError('OTP is invalid or has expired', 400);
+
+  const { newPassword, confirmNewPassword } = req.body;
   if (newPassword !== confirmNewPassword) throw new appError("password don't match")
 
   const hashedPassword = await bcrypt.hash(newPassword, 10);
-  const user = await User.findOne({ email });
   user.password = hashedPassword;
+  user.OTP = undefined; 
+  user.otpExpire = undefined;
   await user.save();
 
-  res.status(200).json({ status: "success", data: user });
+  res.status(200).json({ status: "success", data: user.email });
 })
 
 export { register, login, logout, forgotPassword, resetPassword }
