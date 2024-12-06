@@ -6,13 +6,13 @@ import crypto from 'crypto';
 import { sendResetMail } from '../utils/sendResetMail.js';
 
 const register = asyncWrapper(async (req, res) => {
-  const { firstName, lastName, email, password, role } = req.body;
+  const { firstName, lastName, email, password, role, dateOfBirth, gender, phone, country, address } = req.body;
 
   const user = await User.findOne({ email: email });
   if (user) throw new appError("user aleardy existed", 409);
 
   const hashedPassword = await bcrypt.hash(password, 10);
-  const newUser = await User.create({ firstName, lastName, email, password: hashedPassword, role });
+  const newUser = await User.create({ firstName, lastName, email, password: hashedPassword, role, dateOfBirth, gender, phone, country, address });
 
   res.status(201).json({ status: "success", data: newUser });
 })

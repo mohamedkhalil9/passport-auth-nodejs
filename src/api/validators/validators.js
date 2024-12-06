@@ -11,18 +11,27 @@ export const idValidator = [
 export const registerValidator = [
   body('firstName')
     .notEmpty()
-    .withMessage('first name required'),
+    .withMessage('first name is required'),
   body('lastName')
     .notEmpty()
-    .withMessage('last name required'),
+    .withMessage('last name is required'),
   body('email')
     .notEmpty()
-    .withMessage('email required')
+    .withMessage('email is required')
     .isEmail()
     .withMessage('enter a valid email address'),
   body('password')
     .notEmpty()
-    .withMessage('password required'),
+    .withMessage('password is required'),
+  body('dateOfBirth')
+    .notEmpty()
+    .withMessage('date of birth is required'),
+  body('gender')
+    .notEmpty()
+    .withMessage('gender is required'),
+  body('phone')
+    .notEmpty()
+    .withMessage('phone is required'),
   validatorMiddleware
 ]
 

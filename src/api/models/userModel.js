@@ -25,21 +25,21 @@ const UserSchema = new mongoose.Schema({
     type: String,
     enum: ['patient', 'doctor', 'admin', 'amenities'],
   },
-  //dateOfBirth: {
-  //  type: Date,
-  //  required: true,
-  //},
-  //gender: {
-  //  type: String,
-  //  enum: ["Male", "Female"],
-  //  required: true
-  //},
-  //phone: {
-  //  type: String,
-  //  required: true,
-  //},
-  //country: String,
-  //address: String,
+  dateOfBirth: {
+    type: Date,
+    required: true,
+  },
+  gender: {
+    type: String,
+    enum: ["Male", "Female"],
+    required: true
+  },
+  phone: {
+    type: String,
+    required: true,
+  },
+  country: String,
+  address: String,
   googleId: String
 
 });
