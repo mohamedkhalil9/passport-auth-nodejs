@@ -17,7 +17,9 @@ export const registerValidator = [
     .withMessage('last name required'),
   body('email')
     .notEmpty()
-    .withMessage('email required'),
+    .withMessage('email required')
+    .isEmail()
+    .withMessage('enter a valid email address'),
   body('password')
     .notEmpty()
     .withMessage('password required'),
@@ -27,9 +29,29 @@ export const registerValidator = [
 export const loginValidator = [
   body('email')
     .notEmpty()
-    .withMessage('email required'),
+    .withMessage('email required')
+    .isEmail()
+    .withMessage('enter a valid email address'),
   body('password')
     .notEmpty()
     .withMessage('password required'),
+  validatorMiddleware
+]
+
+export const emailValidator = [
+  body('email')
+    .notEmpty()
+    .withMessage('email required')
+    .isEmail()
+    .withMessage('enter a valid email address'),
+  validatorMiddleware
+]
+
+export const OTPValidator = [
+  body('OTP')
+    .notEmpty()
+    .withMessage('OTP verification code is required')
+    .isLength({ min: 4, max: 4 })
+    .withMessage('enter a valid OTP code'),
   validatorMiddleware
 ]

@@ -36,9 +36,6 @@ passport.use(new LocalStrategy({ usernameField: 'email' }, async (email, passwor
   }
 }))
 
-const clientID = process.env.clientID;
-const clientSecret = process.env.clientSecrect;
-
 passport.use(new GoogleStrategy({
   clientID: clientID,
   clientSecret: clientSecret,
