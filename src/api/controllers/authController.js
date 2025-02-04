@@ -41,11 +41,10 @@ const forgotPassword = asyncWrapper(async (req, res) => {
   if (!user) throw new appError('user not found', 404);
 
   const OTP = crypto.randomInt(1000, 10000).toString();
-  const otpExpire = Date.now() + 1000 * 60 //* 5;
-
+  
   //const hashedOTP = await bcrypt.hash(OTP, 10);
   user.OTP = OTP;
-  user.otpExpire = otpExpire;
+  user.otpExpire = Date.now() + 1000 * 60 * 5;
   await user.save();
 
   sendResetMail(email, OTP);
