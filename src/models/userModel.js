@@ -1,26 +1,27 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const UserSchema = new mongoose.Schema({
   firstName: {
     type: String,
-    required: true
+    required: true,
   },
   lastName: {
     type: String,
-    required: true
+    required: true,
   },
   email: {
     type: String,
-    required: true
+    required: true,
   },
   password: {
     type: String,
   },
   OTP: String,
   otpExpire: Date,
+  otpVerifed: Boolean,
   role: {
     type: String,
-    enum: ['patient', 'doctor', 'admin', 'amenities'],
+    enum: ["patient", "doctor", "admin", "amenities"],
   },
   dateOfBirth: {
     type: Date,
@@ -37,10 +38,9 @@ const UserSchema = new mongoose.Schema({
   },
   country: String,
   address: String,
-  googleId: String
-
+  googleId: String,
 });
 
-const User = mongoose.model('User', UserSchema);
+const User = mongoose.model("User", UserSchema);
 
 export default User;
