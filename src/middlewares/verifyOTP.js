@@ -1,9 +1,9 @@
 import AppError from "../utils/appError.js";
 import User from "../models/userModel.js";
-import asyncWrapper from "./asyncWrapper.js";
+import asyncHandler from "./asyncHandler.js";
 import bcrypt from "bcrypt";
 
-export const verifyOTP = asyncWrapper(async (req, res) => {
+export const verifyOTP = asyncHandler(async (req, res) => {
   const { OTP, email } = req.body;
 
   const user = await User.findOne({ email });

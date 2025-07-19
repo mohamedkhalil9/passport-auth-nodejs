@@ -1,11 +1,11 @@
 import User from "./../models/userModel.js";
-import asyncWrapper from "./../middlewares/asyncWrapper.js";
+import asyncHandler from "./../middlewares/asyncHandler.js";
 import appError from "./../utils/appError.js";
 import bcrypt from "bcrypt";
 import crypto from "crypto";
 import { sendResetMail } from "../utils/sendResetMail.js";
 
-const register = asyncWrapper(async (req, res) => {
+const register = asyncHandler(async (req, res) => {
   const {
     firstName,
     lastName,
@@ -39,7 +39,7 @@ const register = asyncWrapper(async (req, res) => {
   res.status(201).json({ status: "success", data: newUser });
 });
 
-const login = asyncWrapper(async (req, res) => {
+const login = asyncHandler(async (req, res) => {
   const { user } = req;
   req.login(user, (err) => {
     if (err) throw new appError(err.message, 500);
@@ -48,7 +48,7 @@ const login = asyncWrapper(async (req, res) => {
   });
 });
 
-const logout = asyncWrapper(async (req, res) => {
+const logout = asyncHandler(async (req, res) => {
   req.logout((err) => {
     if (err) throw new appError(err.message, 500);
 
@@ -56,21 +56,21 @@ const logout = asyncWrapper(async (req, res) => {
   });
 });
 
-const forgotPassword = asyncWrapper(async (req, res) => {
+const forgotPassword = asyncHandler(async (req, res) => {
   const { email } = req.body;
 
   const user = await User.findOne({ email });
   if (!user) throw new appError("user not found", 404);
 
-  const OTP = crypto.randomInt(1000, 10000).toString();
+  const otp = crypto.randomInt(100000, 1000000).toString();
 
   //const hashedOTP = await bcrypt.hash(OTP, 10);
-  user.OTP = OTP;
+  user.otp = otp;
   user.otpExpire = Date.now() + 1000 * 60 * 5;
   await user.save();
 
   try {
-    sendResetMail(email, OTP);
+    sendResetMail(email, otp);
   } catch (error) {
     console.log(error);
   }
@@ -78,7 +78,9 @@ const forgotPassword = asyncWrapper(async (req, res) => {
   res.status(200).json({ status: "success", data: user.email });
 });
 
-const resetPassword = asyncWrapper(async (req, res) => {
+// export const verifyOtp
+
+const resetPassword = asyncHandler(async (req, res) => {
   const { OTP } = req.params;
 
   const user = await User.findOne({ OTP, otpExpire: { $gt: Date.now() } });
